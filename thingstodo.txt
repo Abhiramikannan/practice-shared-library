@@ -1,0 +1,8 @@
+jenkins->system->global trusted pipeline libraries
+    name  
+    version: branch name(main)
+    link of repo
+
+
+pipeline:
+@Library(library-name) _
