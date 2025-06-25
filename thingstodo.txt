@@ -4,5 +4,10 @@ jenkins->system->global trusted pipeline libraries
     link of repo
 
 
-pipeline:
-@Library(library-name) _
+
+shared library:
+@Library('name_of _library') _
+steps{
+    function()
+}
+
