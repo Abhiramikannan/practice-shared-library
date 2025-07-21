@@ -8,6 +8,6 @@ jenkins->system->global trusted pipeline libraries
 shared library:
 @Library('name_of _library') _
 steps{
-    function()
+    function() #mavenBuild()
 }
 
