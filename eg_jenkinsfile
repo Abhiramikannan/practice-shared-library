@@ -1,0 +1,47 @@
+@Library('abhi-library') _
+pipeline {
+    agent any
+    environment {
+        name="abhiramikannan"
+    }
+
+    stages {
+        stage('git clone') {
+            steps {
+                git branch:'main' , url: 'https://github.com/vilasvarghese/nodejsapp4cicd.git'
+            }
+        }
+        stage('shared-library') {
+            steps {
+                nodeBuild()
+            }
+        }
+        
+        stage('credentials and login'){
+            steps{
+        
+        withCredentials([usernamePassword(credentialsId: '2',
+        passwordVariable: 'password',
+        usernameVariable: 'username')]) {
+        sh '''
+        echo $password | docker login -u $username --password-stdin
+        docker build -t ${name}/node-image .
+        docker push ${name}/node-image
+        '''
+             }
+            }
+         }
+         stage('deployment and service') {
+            steps {
+                sh '''
+                
+                 kubectl create deploy nodeabhi-deployment --image=${name}/node-image 
+                 kubectl expose deploy nodeabhi-deployment --name=abhinode-service --port=60 --target-port=3000 --type=NodePort
+                
+                 '''
+            }
+        }
+        
+        
+        }
+    }
